@@ -27,6 +27,7 @@ fixtures = [
 					"Purchase Invoice-other_taxes",
 					"Purchase Invoice-excise_tax",
 					"Purchase Invoice-include_isr",
+					"Purchase Invoice-isr_tax",
 					"Purchase Invoice-isr_amount",
 					"Purchase Invoice-isr_rate",
 					"Purchase Invoice-include_retention",

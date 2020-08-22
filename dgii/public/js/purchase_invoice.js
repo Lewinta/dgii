@@ -32,10 +32,12 @@ frappe.ui.form.on("Purchase Invoice", {
 				if(frm.doc.items && frm.doc.items[0]){
 					let expense_acct = frm.doc.items[0].expense_account;
 					let tax = frm.doc.taxes[0];
-					console.log(expense_acct);
-					frappe.model.set_value(tax.doctype, tax.name, "account_head", expense_acct);
-					frappe.model.set_value(tax.doctype, tax.name, "rate", 18);
-					frm.refresh_fields("taxes");
+					frappe.run_serially([
+						() => frappe.model.set_value(tax.doctype, tax.name, "account_head", expense_acct),
+						() => frappe.timeout(1),
+						() => frappe.model.set_value(tax.doctype, tax.name, "rate", 18),
+						() => frm.refresh_fields("taxes"),
+					])
 				}
 				else {
 					frappe.throw("Favor verificar la cuenta de gasto del servicio seleccionado")

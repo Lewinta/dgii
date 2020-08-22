@@ -14,7 +14,7 @@ class Reporte607(Document):
 
 @frappe.whitelist()
 def get_file_address(from_date, to_date):
-	result = frappe.db.sql("""SELECT cust.tax_id, sinv.ncf, sinv.posting_date, sinv.total_taxes_and_charges, sinv.base_total 
+	result = frappe.db.sql("""SELECT cust.tax_id, sinv.ncf, sinv.posting_date, sinv.base_total_taxes_and_charges, sinv.base_total 
 		FROM `tabSales Invoice` AS sinv 
 		JOIN tabCustomer AS cust on sinv.customer = cust.name 
 		WHERE sinv.ncf NOT LIKE '%s' AND cust.tax_id > 0 AND sinv.docstatus = 1 AND sinv.posting_date 
@@ -25,7 +25,7 @@ def get_file_address(from_date, to_date):
 		
 	for row in result:
 		tipo_rnc = frappe.get_value("Customer", {"tax_id": row.tax_id }, ["tipo_rnc"])
-		w.writerow([row.tax_id.replace("-",""), tipo_rnc, row.ncf, "", row.posting_date.strftime("%Y%m%d"), row.total_taxes_and_charges, row.base_total])
+		w.writerow([row.tax_id.replace("-",""), tipo_rnc, row.ncf, "", row.posting_date.strftime("%Y%m%d"), row.base_total_taxes_and_charges, row.base_total])
 
 	frappe.response['result'] = cstr(w.getvalue())
 	frappe.response['type'] = 'csv'
